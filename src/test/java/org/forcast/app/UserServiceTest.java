@@ -31,9 +31,6 @@ public class UserServiceTest {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
-	
 	@MockBean
 	private UserRepository userRepository;
 	

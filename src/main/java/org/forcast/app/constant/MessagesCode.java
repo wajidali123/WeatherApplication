@@ -21,4 +21,8 @@ public class MessagesCode {
 	public static final int USERNAME_OR_PASSWORD_NOT_MATCH = 1005;
 	
 	public static final int USER_DETAILS_MISSING = 1006;
+	
+	public static final int WEATHER_API_NOT_REACHABLE = 1007;
+	
+	
 }
