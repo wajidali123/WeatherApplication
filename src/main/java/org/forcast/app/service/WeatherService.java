@@ -3,22 +3,15 @@
  */
 package org.forcast.app.service;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
 import org.forcast.app.config.PropertiesConfig;
-import org.forcast.app.config.RestTemplateResponseHandler;
 import org.forcast.app.constant.MessagesCode;
 import org.forcast.app.dto.WeatherDto;
 import org.forcast.app.exception.BusinessException;
 import org.forcast.app.exception.ForcastException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,13 +29,7 @@ public class WeatherService {
 	
 	@Autowired
 	private RestTemplate restTemplate;
-	
-	@Autowired
-    public WeatherService(RestTemplateBuilder restTemplateBuilder) {
-        restTemplate = restTemplateBuilder
-          .errorHandler(new RestTemplateResponseHandler())
-          .build();
-    }
+
 	
 	@SuppressWarnings("unlikely-arg-type")
 	@Cacheable(value="getWeatherDetailsByCityName", cacheManager="cacheTimeoutManager")
@@ -86,7 +73,7 @@ public class WeatherService {
 			try {
 				response = restTemplate.getForEntity(apiUrl, String.class);
 			} catch (Exception e) {
-				if(e.getMessage().contains("I/O error on GET request for") || e.getMessage().contains("java.net.UnknownHostException")) {
+				if(e.getMessage().contains("I/O error") || e.getMessage().contains("UnknownHostException")) {
 					throw new ForcastException(MessagesCode.WEATHER_API_NOT_REACHABLE);
 				}
 				else {
